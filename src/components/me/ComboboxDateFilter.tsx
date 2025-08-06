@@ -24,7 +24,7 @@ export function ComboBoxDateFilter({ date, setDate }: ComboBoxDateFilterProps) {
                     <ChevronDownIcon />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto overflow-hidden p-0" align="start" style={{ width: "var(--radix-popover-trigger-width)" }}>
+            <PopoverContent className="w-auto overflow-hidden p-0" align="center" style={{ minWidth: "var(--radix-popover-trigger-width)" }}>
                 <Calendar
                     mode="single"
                     selected={date}
