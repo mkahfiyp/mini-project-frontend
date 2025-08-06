@@ -1,5 +1,6 @@
 "use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiCall } from "@/helper/apiCall";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -59,7 +60,14 @@ export default function TransactionPage() {
                                         </div>
                                     )}
                                     <div className="text-sm mb-1">
-                                        Metode Pembayaran: {trx.payment_method.replace("-", " ")}
+                                        Metode Pembayaran :
+                                        {
+                                            trx.payment_method !== null ? (
+                                                ` ${trx.payment_method.replace("-", " ")}`
+                                            ) : (
+                                                " -"
+                                            )
+                                        }
                                     </div>
                                     <div className="text-sm mb-1">
                                         Point Digunakan: {trx.used_point}
@@ -68,6 +76,13 @@ export default function TransactionPage() {
                                         Deadline Pembayaran: {new Date(trx.payment_deadline).toLocaleString("id-ID")}
                                     </div>
                                 </CardContent>
+                                <CardFooter>
+                                    {
+                                        trx.Ticket.end_date < new Date().toISOString() && trx.status === "COMPLETED" && (
+                                            <Button>Review</Button>
+                                        )
+                                    }
+                                </CardFooter>
                             </Card>
                         ))
                     )}
