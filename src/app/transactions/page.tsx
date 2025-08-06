@@ -1,7 +1,9 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { apiCall } from "@/helper/apiCall";
+import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -76,10 +78,40 @@ export default function TransactionPage() {
                                         Deadline Pembayaran: {new Date(trx.payment_deadline).toLocaleString("id-ID")}
                                     </div>
                                 </CardContent>
-                                <CardFooter>
+                                <CardFooter className="">
                                     {
-                                        trx.Ticket.end_date < new Date().toISOString() && trx.status === "COMPLETED" && (
-                                            <Button>Review</Button>
+                                        // trx.Ticket.end_date < new Date().toISOString() && trx.status === "done" && trx.Reviews.length === 0 && (
+                                        trx.status === "done" && trx.Reviews.length === 0 && (
+                                            <div className="w-full flex justify-end">
+                                                <Button onClick={() => router.push(`/review?transaction=${trx.transaction_code}`)}>Review</Button>
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        trx.status === "done" && trx.Reviews.length !== 0 && (
+                                            // <span>{trx.Reviews[0].komen}</span>
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <Label className="text-2xl font-medium mb-2 block">Review</Label>
+                                                    <div className="flex gap-1">
+                                                        {[1, 2, 3, 4, 5].map((value) => (
+                                                            <button key={value} className="p-1" disabled>
+                                                                <Star
+                                                                    className={`h-6 w-6 ${value <= trx.Reviews[0]?.rating
+                                                                        ? "fill-yellow-400 text-yellow-400"
+                                                                        : "text-muted-foreground"
+                                                                        }`}
+                                                                />
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p className="italic text-black/75">
+                                                        "{trx.Reviews[0]?.komen}"
+                                                    </p>
+                                                </div>
+                                            </div>
                                         )
                                     }
                                 </CardFooter>
